@@ -16,9 +16,9 @@ then
   done
 elif [ $dir = "dr" ]
 then
-  for i in {1..8}
+  for i in {0..7}
   do
-    ./wifi_pcap.py wifi_mcs$i.pcap
+    ./wifi_pcap.py wifi-mcs$i.pcap
   done
 else
   echo "Error!!"
