@@ -1,9 +1,10 @@
-#!/bin/python3
+#!/usr/bin/python3
 
 import pyshark
 import argparse
+import numpy as np
 
-TX_PACKET = 1000
+TX_PACKET = 10000
 
 parser = argparse.ArgumentParser(description='analyze the pcap-file')
 
@@ -17,15 +18,17 @@ args = parser.parse_args()
 cap = pyshark.FileCapture(args.pcap_file)
 
 snr = []
+num = 0
 
 for p in cap:
     try:
-        snr.append(int(p.wlan_radio.snr))
-        
+        #print(p)
+        snr.append(10 ** (int(p.wlan_radio.signal_dbm) / 10))
+        num += 1
     except AttributeError as e:
         continue
 
 snr = np.array(snr)
 
-print("Average_SNR," np.averange(snr))
-print("PER,", len(cap) / TX_PACKET)
+#print("Average_SNR,", 10 * np.log10(np.average(snr)))
+print(1 - num / TX_PACKET)
